@@ -1,4 +1,4 @@
-import sys
+import argparse
 
 
 def main():
@@ -17,10 +17,12 @@ def main():
 
 
 def get_paths():
-    if len(sys.argv) < 2:
-        print("No path provided, exiting...")
-        sys.exit(1)
-    return sys.argv[1:]
+    parser = argparse.ArgumentParser(
+        description="Generate a character frequency report for one or more text files."
+    )
+    parser.add_argument("paths", nargs="+", help="One or more paths to text files.")
+    args = parser.parse_args()
+    return args.paths
 
 
 def get_text(path):
