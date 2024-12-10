@@ -63,10 +63,7 @@ def get_chars_dict(text):
 
 
 def get_chars_dict_list(chars_dict):
-    chars_dict_list = []
-    for key in chars_dict:
-        chars_dict_list.append({"name": key, "num": chars_dict[key]})
-    return chars_dict_list
+    return [{"name": key, "num": chars_dict[key]} for key in chars_dict]
 
 
 def sort_on(dict):
