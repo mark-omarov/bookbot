@@ -1,7 +1,9 @@
 import argparse
+import logging
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     paths = get_paths()
     for path in paths:
         text = get_text(path)
@@ -37,11 +39,11 @@ def get_text(path):
         with open(path, "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
-        print(f"Error: The file '{path}' does not exist.")
+        logging.error(f"The file '{path}' does not exist.")
     except PermissionError:
-        print(f"Error: Permission denied for '{path}'.")
+        logging.error(f"Permission denied for '{path}'.")
     except Exception as e:
-        print(f"Error: An unexpected error occurred while reading '{path}': {e}")
+        logging.error(f"An unexpected error occurred while reading '{path}': {e}")
     return None
 
 
