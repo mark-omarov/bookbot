@@ -36,6 +36,8 @@ def get_chars_dict(text):
     chars_dict = {}
     for char in text:
         lowered = char.lower()
+        if lowered.strip() == "":
+            continue
         if char not in chars_dict:
             chars_dict[lowered] = 1
         else:
