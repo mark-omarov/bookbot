@@ -5,6 +5,13 @@ def main():
     paths = get_paths()
     for path in paths:
         text = get_text(path)
+        if text is None:
+            continue
+        if not text.strip():
+            print(f"--- Begin report of {path} ---")
+            print("The file is empty or contains no readable text.")
+            print("--- End report ---\n")
+            continue
         words_count = count_words(text)
         chars_dict = get_chars_dict(text)
         chars_dict_list = get_chars_dict_list(chars_dict)
@@ -12,7 +19,7 @@ def main():
         print(f"--- Begin report of {path} ---")
         print(f"{words_count} words found in the document")
         for item in chars_dict_list:
-            print(f"The '{item["name"]}' character was found {item["num"]} times")
+            print(f"The '{item['name']}' character was found {item['num']} times")
         print("--- End report ---")
 
 
@@ -26,8 +33,16 @@ def get_paths():
 
 
 def get_text(path):
-    with open(path) as f:
-        return f.read()
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"Error: The file '{path}' does not exist.")
+    except PermissionError:
+        print(f"Error: Permission denied for '{path}'.")
+    except Exception as e:
+        print(f"Error: An unexpected error occurred while reading '{path}': {e}")
+    return None
 
 
 def count_words(text):
