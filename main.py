@@ -1,15 +1,26 @@
+import sys
+
+
 def main():
-    book_path = "./books/frankenstein.txt"
-    text = get_text(book_path)
-    words_count = count_words(text)
-    chars_dict = get_chars_dict(text)
-    chars_dict_list = get_chars_dict_list(chars_dict)
-    chars_dict_list.sort(reverse=True, key=sort_on)
-    print(f"--- Begin report of {book_path} ---")
-    print(f"{words_count} words found in the document")
-    for item in chars_dict_list:
-        print(f"The '{item["name"]}' character was found {item["num"]} times")
-    print("--- End report ---")
+    paths = get_paths()
+    for path in paths:
+        text = get_text(path)
+        words_count = count_words(text)
+        chars_dict = get_chars_dict(text)
+        chars_dict_list = get_chars_dict_list(chars_dict)
+        chars_dict_list.sort(reverse=True, key=sort_on)
+        print(f"--- Begin report of {path} ---")
+        print(f"{words_count} words found in the document")
+        for item in chars_dict_list:
+            print(f"The '{item["name"]}' character was found {item["num"]} times")
+        print("--- End report ---")
+
+
+def get_paths():
+    if len(sys.argv) < 2:
+        print("No path provided, exiting...")
+        sys.exit(1)
+    return sys.argv[1:]
 
 
 def get_text(path):
@@ -43,4 +54,5 @@ def sort_on(dict):
     return dict["num"]
 
 
-main()
+if __name__ == "__main__":
+    main()
