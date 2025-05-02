@@ -2,6 +2,8 @@
 
 This script reads one or more text files and produces a simple frequency report of words and individual characters found in each file.
 
+BookBot is my first [Boot.dev](https://www.boot.dev) project!
+
 ## Usage
 
 ```bash
