@@ -1,5 +1,6 @@
-import argparse
+import sys
 import logging
+from stats import count_words, count_chars, get_chars_dict_list
 
 
 def main():
@@ -15,24 +16,21 @@ def main():
             print("--- End report ---\n")
             continue
         words_count = count_words(text)
-        chars_dict = get_chars_dict(text)
+        chars_dict = count_chars(text)
         chars_dict_list = get_chars_dict_list(chars_dict)
         chars_dict_list.sort(reverse=True, key=sort_on)
         print(f"--- Begin report of {path} ---")
-        print(f"{words_count} words found in the document")
+        print(f"Found {words_count} total words")
         for item in chars_dict_list:
-            print(f"The '{item['name']}' character was found {item['num']} times")
+            print(f"{item['char']}: {item['num']}")
         print("--- End report ---")
 
 
 def get_paths():
-    parser = argparse.ArgumentParser(
-        description="Generate a character frequency report for one or more text files."
-    )
-    parser.add_argument("paths", nargs="+", help="One or more paths to text files.")
-    args = parser.parse_args()
-    return args.paths
-
+    if len(sys.argv) < 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    return sys.argv[1:]
 
 def get_text(path):
     try:
@@ -46,26 +44,6 @@ def get_text(path):
         logging.error(f"An unexpected error occurred while reading '{path}': {e}")
     return None
 
-
-def count_words(text):
-    return len(text.split())
-
-
-def get_chars_dict(text):
-    chars_dict = {}
-    for char in text:
-        lowered = char.lower()
-        if lowered.strip() == "":
-            continue
-        if char not in chars_dict:
-            chars_dict[lowered] = 1
-        else:
-            chars_dict[lowered] += 1
-    return chars_dict
-
-
-def get_chars_dict_list(chars_dict):
-    return [{"name": key, "num": chars_dict[key]} for key in chars_dict]
 
 
 def sort_on(dict):
